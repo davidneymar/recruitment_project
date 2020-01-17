@@ -133,6 +133,11 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 	@Override
 	public boolean addCandidate(CandidateListDto candidateDto) {
 		sql = "insert into candidate_list values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		
+		Integer fk= null;
+		if(candidateDto.getJobDesc().getJobDescId() != 0){
+			fk = candidateDto.getJobDesc().getJobDescId();
+		}
 		Object[] obj = new Object[] {
 				candidateDto.getCandidateId(),
 				candidateDto.getName(),
@@ -145,7 +150,8 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 				candidateDto.getResume(),
 				candidateDto.getPhotograph(),
 				candidateDto.getDate(),
-				candidateDto.getStatus()
+				candidateDto.getStatus(),
+				fk
 		};
 		count = jdbcTemplate.update(sql,obj);
 		if(count > 0)
@@ -158,8 +164,9 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 		@Override
 		public CandidateListDto mapRow(ResultSet rs, int rowNum) throws SQLException {
 			JobDescriptionDto jobDescription = null;
-			if(rs.getInt("job_desc_id") != 0)
+			if(rs.getObject("job_desc_id") != null)
 				jobDescription = jobDescDao.getJobDescription(rs.getInt("job_desc_id"));
+			
 			CandidateListDto candidate = new CandidateListDto();
 			candidate.setCandidateId(rs.getInt("candidateId"));
 			candidate.setName(rs.getString("name"));

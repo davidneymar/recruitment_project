@@ -1,5 +1,10 @@
 package com.mindgate.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class AssessmentDto {
 
 	private int assessmentId;

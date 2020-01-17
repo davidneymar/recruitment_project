@@ -29,7 +29,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	@Override
 	public boolean addEmployee(EmployeeDto employee) {
 		sql = "insert into employee_master values(?,?,?,?,?,?,?)";
-		int fk=0;
+		Integer fk= null;
 		if(employee.getProject().getProjecId() != 0){
 			fk = employee.getProject().getProjecId();
 		}
@@ -101,11 +101,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			employee.setPassword(map.get("employee_password").toString());
 			employee.setStatus(map.get("status").toString());
 			
-			if((int)map.get("project_Id") != 0){
+			if(Integer.valueOf(map.get("project_Id").toString()) != null){
 				int projectId = Integer.valueOf(map.get("project_Id").toString());
 				employee.setProject(projectdao.getProject(projectId));
 			}else
-				employee.setProject(null);
+				employee.setProject(new ProjectDto());
 			employeeList.add(employee);
 		}
 		return employeeList;		
@@ -115,7 +115,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		@Override
 		public EmployeeDto mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ProjectDto project = null;
-			if(rs.getInt("project_id") != 0)
+			if(rs.getObject("project_id") != null)
 				project = projectdao.getProject(rs.getInt("project_id"));
 			
 			EmployeeDto employee = new EmployeeDto(

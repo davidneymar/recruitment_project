@@ -42,10 +42,10 @@ public class JobDescriptionDAOImpl implements JobDescriptionDAO{
 					jobDesc.setDesignation(data.get("designation").toString());
 					jobDesc.setNoOfVacancies(Integer.valueOf(data.get("noOfVacancies").toString()));
 					
-					if((int) data.get("project_id") != 0) {
+					if(Integer.valueOf(data.get("project_id").toString()) != null) {
 						jobDesc.setProjectDetails(projectDao.getProject(Integer.valueOf(data.get("project_id").toString())));
 					}else
-						jobDesc.setProjectDetails(null);
+						jobDesc.setProjectDetails(new ProjectDto());
 					listJobDesc.add(jobDesc);	                          
 		}
 		return listJobDesc;
@@ -93,7 +93,7 @@ public class JobDescriptionDAOImpl implements JobDescriptionDAO{
 	@Override
 	public boolean postJobDescription(JobDescriptionDto jobDesc) {
 		sql = "insert into job_description values(?,?,?,?,?,?,?,?)";
-		int fk = 0;
+		Integer fk = null;
 		if(jobDesc.getProjectDetails().getProjecId() != 0)
 			fk = jobDesc.getProjectDetails().getProjecId();
 		Object[] obj = new Object[] {
@@ -117,7 +117,7 @@ public class JobDescriptionDAOImpl implements JobDescriptionDAO{
 		@Override
 		public JobDescriptionDto mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ProjectDto project = null;
-			if(rs.getInt("project_id") != 0)
+			if(rs.getObject("project_id") != null)
 				projectDao.getProject(rs.getInt("project_id"));
 			
 			JobDescriptionDto job = new JobDescriptionDto();

@@ -23,30 +23,30 @@ import com.mindgate.serviceImpl.AssessmentServiceImpl;
 public class EmployeeController {
 	
 	@Autowired
-	EmployeeService employeeService;
+	private EmployeeService employeeService;
 	
 	@GetMapping("/getAll")
-	public List<EmployeeDto> getAllAssessment() {
+	public List<EmployeeDto> getAllEmployee() {
 		return employeeService.getAllEmployees();
 	}
 	
 	@GetMapping("/{id}")
-	public EmployeeDto getAssessment(@PathVariable("id") int employeeId) {
+	public EmployeeDto getEmployee(@PathVariable("id") int employeeId) {
 		return employeeService.getEmployee(employeeId);
 	}
 	
 	@DeleteMapping("/{id}")
-	public boolean deleteAssessment(@PathVariable("id") int employeeId) {
+	public boolean deleteEmployee(@PathVariable("id") int employeeId) {
 		return employeeService.deleteEmployee(employeeId);
 	}
 	
 	@PutMapping("/")
-	public boolean updateAssessment(@RequestBody EmployeeDto employee) {
+	public boolean updateEmployee(@RequestBody EmployeeDto employee) {
 		return employeeService.updateEmployee(employee);
 	}
 	
 	@PostMapping("/")
-	public boolean addAssessment(@RequestBody EmployeeDto employee) {
+	public boolean addEmployee(@RequestBody EmployeeDto employee) {
 		return employeeService.addEmployee(employee);
 	}
 }

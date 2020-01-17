@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.mindgate.dao.AssessmentDao;
 import com.mindgate.dto.AssessmentDto;
 import com.mindgate.dto.CandidateListDto;
+import com.mindgate.dto.ProjectDto;
 
 @Repository
 public class AssessmentDaoImpl implements AssessmentDao {
@@ -44,7 +45,7 @@ public class AssessmentDaoImpl implements AssessmentDao {
 			assessment.setProgramTestScore(Float.valueOf(map.get("program_test_Score").toString()));
 			assessment.setSoftSkillsScore(Float.valueOf(map.get("SOFT_SKILL_ROUND_SCORE").toString()));
 			
-			if(Integer.parseInt(map.get("candidate_id").toString()) != 0){
+			if(Integer.valueOf(map.get("candidate_id").toString()) != null){
 				int candidateId = Integer.valueOf(map.get("candidate_id").toString());
 				assessment.setCandidatedto(candidateDao.getCandidate(candidateId));
 			}
@@ -68,7 +69,10 @@ public class AssessmentDaoImpl implements AssessmentDao {
 	@Override
 	public boolean postAssessment(AssessmentDto assessment) {
 		sql = "insert into assessment_master values(?,?,?,?,?,?,?,?)";
-
+		Integer fk= null;
+		if(assessment.getCandidatedto().getCandidateId() != 0){
+			fk = assessment.getCandidatedto().getCandidateId();
+		}
 		Object obj[] = new Object[]{
 			assessment.getAssessmentId(),
 			assessment.getRating(),
@@ -119,11 +123,10 @@ public class AssessmentDaoImpl implements AssessmentDao {
 
 		@Override
 		public AssessmentDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-			CandidateListDto candidate = candidateDao.getCandidate(rs.getInt("candidate_id"));
-				if(candidate == null)
-					candidate = new CandidateListDto();
+			CandidateListDto candidate = null;
+			if(rs.getObject("candidate_id") != null)
+				candidate = candidateDao.getCandidate(rs.getInt("project_id"));
 
-				candidate = candidateDao.getCandidate(rs.getInt("candidate_id"));
 			AssessmentDto assessment = new AssessmentDto(
 					rs.getInt("assessment_id"),
 					rs.getFloat("rating"),
