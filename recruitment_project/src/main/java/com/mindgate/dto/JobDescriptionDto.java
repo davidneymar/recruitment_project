@@ -3,25 +3,25 @@ package com.mindgate.dto;
 public class JobDescriptionDto {
 	
 	private int jobDescId;
-	private String experience;
+	private float experience;
 	private String qualification;
-	private String primarySkills;
+	private String primarySkill;
 	private String secondarySkills;
 	private String designation;
 	private int noOfVacancies;
-	private ProjectDetailsDto projectDetails;	//forign key
+	private ProjectDto projectDetails;	//forign key
 	
 	public JobDescriptionDto() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public JobDescriptionDto(int jobDescId, String experience, String qualification, String primarySkills,
-			String secondarySkills, String designation, int noOfVacancies, ProjectDetailsDto projectDetails) {
+	public JobDescriptionDto(int jobDescId, float experience, String qualification, String primarySkill,
+			String secondarySkills, String designation, int noOfVacancies, ProjectDto projectDetails) {
 		super();
 		this.jobDescId = jobDescId;
 		this.experience = experience;
 		this.qualification = qualification;
-		this.primarySkills = primarySkills;
+		this.primarySkill = primarySkill;
 		this.secondarySkills = secondarySkills;
 		this.designation = designation;
 		this.noOfVacancies = noOfVacancies;
@@ -36,11 +36,11 @@ public class JobDescriptionDto {
 		this.jobDescId = jobDescId;
 	}
 
-	public String getExperience() {
+	public float getExperience() {
 		return experience;
 	}
 
-	public void setExperience(String experience) {
+	public void setExperience(float experience) {
 		this.experience = experience;
 	}
 
@@ -52,12 +52,12 @@ public class JobDescriptionDto {
 		this.qualification = qualification;
 	}
 
-	public String getPrimarySkills() {
-		return primarySkills;
+	public String getPrimarySkill() {
+		return primarySkill;
 	}
 
-	public void setPrimarySkills(String primarySkills) {
-		this.primarySkills = primarySkills;
+	public void setPrimarySkill(String primarySkill) {
+		this.primarySkill = primarySkill;
 	}
 
 	public String getSecondarySkills() {
@@ -84,22 +84,20 @@ public class JobDescriptionDto {
 		this.noOfVacancies = noOfVacancies;
 	}
 
-	public ProjectDetailsDto getProjectDetails() {
+	public ProjectDto getProjectDetails() {
 		return projectDetails;
 	}
 
-	public void setProjectDetails(ProjectDetailsDto projectDetails) {
+	public void setProjectDetails(ProjectDto projectDetails) {
 		this.projectDetails = projectDetails;
 	}
 
 	@Override
 	public String toString() {
 		return "JobDescriptionDto [jobDescId=" + jobDescId + ", experience=" + experience + ", qualification="
-				+ qualification + ", primarySkills=" + primarySkills + ", secondarySkills=" + secondarySkills
+				+ qualification + ", primarySkills=" + primarySkill + ", secondarySkills=" + secondarySkills
 				+ ", designation=" + designation + ", noOfVacancies=" + noOfVacancies + ", projectDetails="
 				+ projectDetails + "]";
 	}
 	
-	
-
 }

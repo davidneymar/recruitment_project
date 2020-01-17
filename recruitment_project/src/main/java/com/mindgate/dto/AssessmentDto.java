@@ -3,22 +3,26 @@ package com.mindgate.dto;
 public class AssessmentDto {
 
 	private int assessmentId;
-	private String technicalSkill;
 	private float rating;
+	private float aptitueScore;
 	private String status;
+	private float groupDiscussionScore;
+	private float softSkillsScore;
+	private float programTestScore;
 	private CandidateListDto candidatedto;
 	
-	public AssessmentDto() {
-		// TODO Auto-generated constructor stub
-	}
+	public AssessmentDto() {}
 
-	public AssessmentDto(int assessmentId, String technicalSkill, float rating, String status,
-			CandidateListDto candidatedto) {
+	public AssessmentDto(int assessmentId, float rating, float aptitueScore, String status, float groupDiscussionScore,
+			float softSkillsScore, float programTestScore, CandidateListDto candidatedto) {
 		super();
 		this.assessmentId = assessmentId;
-		this.technicalSkill = technicalSkill;
 		this.rating = rating;
+		this.aptitueScore = aptitueScore;
 		this.status = status;
+		this.groupDiscussionScore = groupDiscussionScore;
+		this.softSkillsScore = softSkillsScore;
+		this.programTestScore = programTestScore;
 		this.candidatedto = candidatedto;
 	}
 
@@ -30,14 +34,6 @@ public class AssessmentDto {
 		this.assessmentId = assessmentId;
 	}
 
-	public String getTechnicalSkill() {
-		return technicalSkill;
-	}
-
-	public void setTechnicalSkill(String technicalSkill) {
-		this.technicalSkill = technicalSkill;
-	}
-
 	public float getRating() {
 		return rating;
 	}
@@ -46,12 +42,44 @@ public class AssessmentDto {
 		this.rating = rating;
 	}
 
+	public float getAptitueScore() {
+		return aptitueScore;
+	}
+
+	public void setAptitueScore(float aptitueScore) {
+		this.aptitueScore = aptitueScore;
+	}
+
 	public String getStatus() {
 		return status;
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public float getGroupDiscussionScore() {
+		return groupDiscussionScore;
+	}
+
+	public void setGroupDiscussionScore(float groupDiscussionScore) {
+		this.groupDiscussionScore = groupDiscussionScore;
+	}
+
+	public float getSoftSkillsScore() {
+		return softSkillsScore;
+	}
+
+	public void setSoftSkillsScore(float softSkillsScore) {
+		this.softSkillsScore = softSkillsScore;
+	}
+
+	public float getProgramTestScore() {
+		return programTestScore;
+	}
+
+	public void setProgramTestScore(float programTestScore) {
+		this.programTestScore = programTestScore;
 	}
 
 	public CandidateListDto getCandidatedto() {
@@ -64,9 +92,11 @@ public class AssessmentDto {
 
 	@Override
 	public String toString() {
-		return "AssessmentDto [assessmentId=" + assessmentId + ", technicalSkill=" + technicalSkill + ", rating="
-				+ rating + ", status=" + status + ", candidatedto=" + candidatedto + "]";
+		return "AssessmentDto [assessmentId=" + assessmentId + ", rating=" + rating + ", aptitueScore=" + aptitueScore
+				+ ", status=" + status + ", groupDiscussionScore=" + groupDiscussionScore + ", softSkillsScore="
+				+ softSkillsScore + ", programTestScore=" + programTestScore + ", candidatedto=" + candidatedto + "]";
 	}
-	
+
+
 	 
 }

@@ -21,23 +21,23 @@ public class AssessmentServiceImpl implements AssessmentService {
 	}
 
 	@Override
-	public AssessmentDto getPerAssessment(int assessmentId) {
-		return assessmentDao.getPerAssessment(assessmentId);
+	public AssessmentDto getAssessment(int assessmentId) {
+		return assessmentDao.getAssessment(assessmentId);
 	}
 
 	@Override
-	public boolean deletePerAssessment(int assessmentId) {
-		return assessmentDao.deletePerAssessment(assessmentId);
+	public boolean deleteAssessment(int assessmentId) {
+		return assessmentDao.deleteAssessment(assessmentId);
 	}
 
 	@Override
-	public boolean updateAssessment(int assessmentId, AssessmentDto assessment) {
-		return assessmentDao.updateAssessment(assessmentId, assessment);
+	public boolean updateAssessment( AssessmentDto assessment) {
+		return assessmentDao.updateAssessment(assessment);
 	}
 
 	@Override
-	public boolean putPerAssessment(AssessmentDto assessment) {
-		return assessmentDao.putPerAssessment(assessment);
+	public boolean postAssessment(AssessmentDto assessment) {
+		return assessmentDao.postAssessment(assessment);
 	}
 
 }

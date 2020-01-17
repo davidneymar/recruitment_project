@@ -9,12 +9,12 @@ public interface AssessmentDao {
 
 	public List<AssessmentDto> getAllAssessment();
 	
-	public AssessmentDto getPerAssessment(int assessmentId);
+	public AssessmentDto getAssessment(int assessmentId);
 	
-	public boolean deletePerAssessment(int assessmentId);
+	public boolean deleteAssessment(int assessmentId);
 	
-	public boolean updateAssessment(int assessmentId,AssessmentDto assessment);
+	public boolean updateAssessment(AssessmentDto assessment);
 	
-	public boolean putPerAssessment(AssessmentDto assessment);
+	public boolean postAssessment(AssessmentDto assessment);
 
 }

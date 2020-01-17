@@ -3,20 +3,21 @@ package com.mindgate.dto;
 public class EmployeeDto {
 
 	private int employeeId;
+	//private String name;  //have to add column(name) into the database
 	private String designation;
 	private float experience;
 	private String primarySkill;
 	private String secondarySkill;
 	private String status;
 	private String password;
-	private ProjectDetailsDto project;
+	private ProjectDto project;
 	
 	public EmployeeDto() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public EmployeeDto(int employeeId, String designation, float experience, String primarySkill, String secondarySkill,
-			String status, String password, ProjectDetailsDto project) {
+			String status, String password, ProjectDto project) {
 		super();
 		this.employeeId = employeeId;
 		this.designation = designation;
@@ -84,11 +85,11 @@ public class EmployeeDto {
 		this.password = password;
 	}
 
-	public ProjectDetailsDto getProject() {
+	public ProjectDto getProject() {
 		return project;
 	}
 
-	public void setProject(ProjectDetailsDto project) {
+	public void setProject(ProjectDto project) {
 		this.project = project;
 	}
 
