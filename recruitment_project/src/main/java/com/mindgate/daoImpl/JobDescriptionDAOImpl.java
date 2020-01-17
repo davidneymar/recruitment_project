@@ -37,10 +37,10 @@ public class JobDescriptionDAOImpl implements JobDescriptionDAO{
 					jobDesc.setJobDescId(Integer.valueOf(data.get("job_Description_id").toString()));
 					jobDesc.setExperience(Float.valueOf(data.get("experience").toString()));
 					jobDesc.setQualification(data.get("qualification").toString());
-					jobDesc.setPrimarySkill(data.get("primarySkill").toString());
-					jobDesc.setSecondarySkills(data.get("secondarySkills").toString());
+					jobDesc.setPrimarySkill(data.get("primary_Skill").toString());
+					jobDesc.setSecondarySkills(data.get("secondary_Skills").toString());
 					jobDesc.setDesignation(data.get("designation").toString());
-					jobDesc.setNoOfVacancies(Integer.valueOf(data.get("noOfVacancies").toString()));
+					jobDesc.setNoOfVacancies(Integer.valueOf(data.get("no_of_resources_required").toString()));
 					
 					if(Integer.valueOf(data.get("project_id").toString()) != null) {
 						jobDesc.setProjectDetails(projectDao.getProject(Integer.valueOf(data.get("project_id").toString())));
@@ -53,13 +53,13 @@ public class JobDescriptionDAOImpl implements JobDescriptionDAO{
 
 	@Override
 	public JobDescriptionDto getJobDescription(int jobDescId) {
-		sql="select * from job_description where job_desc_id="+jobDescId;
+		sql="select * from job_description where JOB_DESCRIPTION_ID="+jobDescId;
 		return jdbcTemplate.queryForObject(sql, new JobDescriptionRowMapper());
 	}
 
 	@Override
 	public boolean deleteJobDescription(int jobDescId) {
-		sql = "delete from job_description where job_desc_id="+jobDescId;
+		sql = "delete from job_description where JOB_DESCRIPTION_ID="+jobDescId;
 		count = jdbcTemplate.update(sql);
 		if(count > 0)
 			return true;
@@ -71,10 +71,10 @@ public class JobDescriptionDAOImpl implements JobDescriptionDAO{
 		sql = "update job_description set job_desc_id=?"
 				+ "experience=?"
 				+ "qualification=?"
-				+ "primarySkill=?"
-				+ "secondarySkills=?"
+				+ "primary_Skill=?"
+				+ "secondary_Skills=?"
 				+ "designation=?"
-				+ "noOfVacancies=?";
+				+ "no_of_resources_required=?";
 		Object[] obj = new Object[] {
 				jobDesc.getJobDescId(),
 				jobDesc.getExperience(),
@@ -124,10 +124,10 @@ public class JobDescriptionDAOImpl implements JobDescriptionDAO{
 			job.setJobDescId(rs.getInt("job_description_id"));
 			job.setExperience(rs.getFloat("experience"));
 			job.setQualification(rs.getString("qualification"));
-			job.setPrimarySkill(rs.getString("primarySkill"));
-			job.setSecondarySkills(rs.getString("secondarySkills"));
+			job.setPrimarySkill(rs.getString("primary_Skill"));
+			job.setSecondarySkills(rs.getString("secondary_Skills"));
 			job.setDesignation(rs.getString("designation"));
-			job.setNoOfVacancies(rs.getInt("noOfVacancies"));
+			job.setNoOfVacancies(rs.getInt("no_of_resources_required"));
 			job.setProjectDetails(project);
 			return job;
 		}

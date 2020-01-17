@@ -33,7 +33,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 	    	project.setProjecId(Integer.valueOf(map.get("project_id").toString()));
 	    	project.setName(map.get("name").toString());
 	    	project.setBudget(Double.valueOf(map.get("budget").toString()));
-	    	project.setNoOfResourceDeployed(Integer.valueOf(map.get("no_of_resource_deployed").toString()));
+	    	project.setNoOfResourceDeployed(Integer.valueOf(map.get("no_of_resources_deployed").toString()));
 	    	projectList.add(project);
 	    }
 		return projectList;
@@ -58,7 +58,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 	public boolean updateProject(ProjectDto project) {
 		sql = "update project_details set name=?"
 				+ "budget=?"
-				+ "no_of_resource_deployed=?"
+				+ "no_of_resources_deployed=?"
 				+ "where project_id=?";
 		Object obj[] = new Object[] {
 				project.getName(),
@@ -95,7 +95,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 			project.setProjecId(rs.getInt("project_id"));
 			project.setName(rs.getString("name"));
 			project.setBudget(rs.getDouble("budget"));
-			project.setNoOfResourceDeployed(rs.getInt("no_of_resource_deployed"));
+			project.setNoOfResourceDeployed(rs.getInt("no_of_resources_deployed"));
 			return project;
 		}
 	}

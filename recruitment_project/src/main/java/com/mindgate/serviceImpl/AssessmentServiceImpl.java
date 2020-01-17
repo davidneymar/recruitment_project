@@ -13,7 +13,7 @@ import com.mindgate.service.AssessmentService;
 public class AssessmentServiceImpl implements AssessmentService {
 
 	@Autowired
-	AssessmentDaoImpl assessmentDao;
+	private AssessmentDaoImpl assessmentDao;
 	
 	@Override
 	public List<AssessmentDto> getAllAssessment() {

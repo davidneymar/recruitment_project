@@ -39,16 +39,16 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 		List<CandidateListDto> listcandidate = new ArrayList<CandidateListDto>();
 		for(Map<String, Object> map : listMapcandidate) {
 			CandidateListDto candidate = new CandidateListDto();
-			candidate.setCandidateId(Integer.valueOf(map.get("candidate_id").toString()));
+			candidate.setCandidateId(Integer.valueOf(map.get("CANDIDATE_ID").toString()));
 			candidate.setName(map.get("name").toString());
-			candidate.setQualification(map.get("qualification").toString());
-			candidate.setExperience(Float.valueOf(map.get("experience").toString()));   
-			candidate.setEmail(map.get("email").toString());
-			candidate.setPhoneNo(map.get("phone_no").toString());
-			candidate.setPrimarySkill(map.get("primarySkill").toString());
-			candidate.setSecondarySkills(map.get("secondarySkills").toString());
+			candidate.setQualification(map.get("QUALIFICATION").toString());
+			candidate.setExperience(Float.valueOf(map.get("EXPERIENCE").toString()));   
+			candidate.setEmail(map.get("ejob_desc_idmail").toString());
+			candidate.setPhoneNo(map.get("PHONE_NUMBER").toString());
+			candidate.setPrimarySkill(map.get("PRIMARY_SKILL").toString());
+			candidate.setSecondarySkills(map.get("SECONDARY_SKILLS").toString());
 			try {
-				Clob candResume = (Clob)map.get("resume");
+				Clob candResume = (Clob)map.get("RESUME");
 				Reader r = candResume.getCharacterStream();
 				int c=0,i=0;
 				byte[] byteArr = null;
@@ -58,7 +58,7 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 					c++;
 				}
 				candidate.setResume(byteArr);   // resume for Clob --> character large object
-				Blob candImage = (Blob)map.get("photograph");
+				Blob candImage = (Blob)map.get("PHOTOGRAPH");
 				candidate.setPhotograph(candImage.getBytes(
 						           1,(int)candImage.length()));// image for Blob --> binary large Object
 				
@@ -68,11 +68,11 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 				System.out.println("exception occur from candImage.length() "+sql);
 			}
 			
-			candidate.setDate((java.sql.Timestamp)map.get("date"));
+			candidate.setDate((java.sql.Timestamp)map.get("APPLIED_DATE"));
 			candidate.setStatus(map.get("status").toString());
 
-			if(Integer.parseInt(map.get("job_desc_id").toString()) != 0)
-				candidate.setJobDesc(jobDescDao.getJobDescription(Integer.valueOf(map.get("job_desc_id").toString())));
+			if(Integer.parseInt(map.get("JOB_DESCRIPTION_ID").toString()) != 0)
+				candidate.setJobDesc(jobDescDao.getJobDescription(Integer.valueOf(map.get("JOB_DESCRIPTION_ID").toString())));
 			else
 				candidate.setJobDesc(new JobDescriptionDto());
 			listcandidate.add(candidate);	
@@ -103,9 +103,9 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 				+ "qualification=?"
 				+ "experience=?"
 				+ "email=?"
-				+ "phoneNo=?"
-				+ "primarySkill=?"
-				+ "secondarySkills=?"
+				+ "phone_Number=?"
+				+ "primary_Skill=?"
+				+ "secondary_Skills=?"
 				+ "resume=?"
 				+ "photograph=?"
 				+ "date=?"
@@ -164,18 +164,18 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 		@Override
 		public CandidateListDto mapRow(ResultSet rs, int rowNum) throws SQLException {
 			JobDescriptionDto jobDescription = null;
-			if(rs.getObject("job_desc_id") != null)
-				jobDescription = jobDescDao.getJobDescription(rs.getInt("job_desc_id"));
+			if(rs.getObject("JOB_DESCRIPTION_ID") != null)
+				jobDescription = jobDescDao.getJobDescription(rs.getInt("JOB_DESCRIPTION_ID"));
 			
 			CandidateListDto candidate = new CandidateListDto();
-			candidate.setCandidateId(rs.getInt("candidateId"));
+			candidate.setCandidateId(rs.getInt("candidate_Id"));
 			candidate.setName(rs.getString("name"));
 			candidate.setQualification(rs.getString("qualification"));
 			candidate.setExperience(rs.getFloat("experience"));   
 			candidate.setEmail(rs.getString("email"));
-			candidate.setPhoneNo(rs.getString("phone_no"));
-			candidate.setPrimarySkill(rs.getString("primarySkill"));
-			candidate.setSecondarySkills(rs.getString("secondarySkills"));
+			candidate.setPhoneNo(rs.getString("phone_number"));
+			candidate.setPrimarySkill(rs.getString("primary_Skill"));
+			candidate.setSecondarySkills(rs.getString("secondary_Skills"));
 			try {
 
 				Clob clobResume = rs.getClob("resume");

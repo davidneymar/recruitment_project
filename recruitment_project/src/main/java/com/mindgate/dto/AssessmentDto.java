@@ -9,7 +9,7 @@ public class AssessmentDto {
 
 	private int assessmentId;
 	private float rating;
-	private float aptitueScore;
+	private float aptitudeScore;
 	private String status;
 	private float groupDiscussionScore;
 	private float softSkillsScore;
@@ -18,12 +18,12 @@ public class AssessmentDto {
 	
 	public AssessmentDto() {}
 
-	public AssessmentDto(int assessmentId, float rating, float aptitueScore, String status, float groupDiscussionScore,
+	public AssessmentDto(int assessmentId, float rating, float aptitudeScore, String status, float groupDiscussionScore,
 			float softSkillsScore, float programTestScore, CandidateListDto candidatedto) {
 		super();
 		this.assessmentId = assessmentId;
 		this.rating = rating;
-		this.aptitueScore = aptitueScore;
+		this.aptitudeScore = aptitudeScore;
 		this.status = status;
 		this.groupDiscussionScore = groupDiscussionScore;
 		this.softSkillsScore = softSkillsScore;
@@ -47,12 +47,12 @@ public class AssessmentDto {
 		this.rating = rating;
 	}
 
-	public float getAptitueScore() {
-		return aptitueScore;
+	public float getAptitudeScore() {
+		return aptitudeScore;
 	}
 
-	public void setAptitueScore(float aptitueScore) {
-		this.aptitueScore = aptitueScore;
+	public void setAptitudeScore(float aptitudeScore) {
+		this.aptitudeScore = aptitudeScore;
 	}
 
 	public String getStatus() {
@@ -97,11 +97,12 @@ public class AssessmentDto {
 
 	@Override
 	public String toString() {
-		return "AssessmentDto [assessmentId=" + assessmentId + ", rating=" + rating + ", aptitueScore=" + aptitueScore
+		return "AssessmentDto [assessmentId=" + assessmentId + ", rating=" + rating + ", aptitudeScore=" + aptitudeScore
 				+ ", status=" + status + ", groupDiscussionScore=" + groupDiscussionScore + ", softSkillsScore="
 				+ softSkillsScore + ", programTestScore=" + programTestScore + ", candidatedto=" + candidatedto + "]";
 	}
 
+	
 
 	 
 }

@@ -37,16 +37,16 @@ public class AssessmentDaoImpl implements AssessmentDao {
 		List<AssessmentDto> listAssessment = new ArrayList<AssessmentDto>();
 		for(Map<String,Object> map : listMapAssessment){
 			AssessmentDto assessment = new AssessmentDto();
-			assessment.setAssessmentId(Integer.valueOf(map.get("assessment_id").toString()));
-			assessment.setAptitueScore(Float.valueOf(map.get("APTITUDE_SCORE").toString()));
-			assessment.setStatus(map.get("status").toString());
+			assessment.setAssessmentId(Integer.valueOf(map.get("ASSESSMENT_ID").toString()));
+			assessment.setAptitudeScore(Float.valueOf(map.get("APTITUDE_SCORE").toString()));
+			assessment.setStatus(map.get("STATUS").toString());
 			assessment.setGroupDiscussionScore(Float.valueOf(map.get("GROUP_DISCUSSION_SCORE").toString()));
 			assessment.setRating(Float.valueOf(map.get("rating").toString()));
-			assessment.setProgramTestScore(Float.valueOf(map.get("program_test_Score").toString()));
-			assessment.setSoftSkillsScore(Float.valueOf(map.get("SOFT_SKILL_ROUND_SCORE").toString()));
+			assessment.setProgramTestScore(Float.valueOf(map.get("PROGRAM_TEST_SCORE").toString()));
+			assessment.setSoftSkillsScore(Float.valueOf(map.get("SOFT_SKILL_SCORE").toString()));
 			
-			if(Integer.valueOf(map.get("candidate_id").toString()) != null){
-				int candidateId = Integer.valueOf(map.get("candidate_id").toString());
+			if(Integer.valueOf(map.get("CANDIDATE_ID").toString()) != null){
+				int candidateId = Integer.valueOf(map.get("CANDIDATE_ID").toString());
 				assessment.setCandidatedto(candidateDao.getCandidate(candidateId));
 			}
 			else{
@@ -76,7 +76,7 @@ public class AssessmentDaoImpl implements AssessmentDao {
 		Object obj[] = new Object[]{
 			assessment.getAssessmentId(),
 			assessment.getRating(),
-			assessment.getAptitueScore(),
+			assessment.getAptitudeScore(),
 			assessment.getStatus(),
 			assessment.getGroupDiscussionScore(),
 			assessment.getSoftSkillsScore(),
@@ -101,13 +101,13 @@ public class AssessmentDaoImpl implements AssessmentDao {
 	@Override
 	public boolean updateAssessment(AssessmentDto assessment) {
 		sql = "update assessment_master set rating = ?,"
-				+ "aptitueScore=?,status = ?,"
-				+ "groupDiscussionScore = ?,"
-				+ "softSkillsScore = ?,"
-				+ "programTestScore = ? where assessmentId = "+assessment.getAssessmentId();
+				+ "aptitude_Score=?,status = ?,"
+				+ "group_Discussion_Score = ?,"
+				+ "soft_Skill_Score = ?,"
+				+ "programTestScore = ? where assessment_Id = "+assessment.getAssessmentId();
 		Object[] obj = new Object[]{
 				assessment.getRating(),
-				assessment.getAptitueScore(),
+				assessment.getAptitudeScore(),
 				assessment.getStatus(),
 				assessment.getGroupDiscussionScore(),
 				assessment.getSoftSkillsScore(),
@@ -125,16 +125,16 @@ public class AssessmentDaoImpl implements AssessmentDao {
 		public AssessmentDto mapRow(ResultSet rs, int rowNum) throws SQLException {
 			CandidateListDto candidate = null;
 			if(rs.getObject("candidate_id") != null)
-				candidate = candidateDao.getCandidate(rs.getInt("project_id"));
+				candidate = candidateDao.getCandidate(rs.getInt("candidate_id"));
 
 			AssessmentDto assessment = new AssessmentDto(
-					rs.getInt("assessment_id"),
+					rs.getInt("ASSESSMENT_ID"),
 					rs.getFloat("rating"),
 					rs.getFloat("APTITUDE_SCORE"),
 					rs.getString("status"),
 					rs.getFloat("GROUP_DISCUSSION_SCORE"),
-					rs.getFloat("SOFT_SKILL_ROUND_SCORE"),
-					rs.getFloat("program_test_Score"),
+					rs.getFloat("SOFT_SKILL_SCORE"),
+					rs.getFloat("PROGRAM_TEST_SCORE"),
 					candidate
 					);
 			return assessment;
