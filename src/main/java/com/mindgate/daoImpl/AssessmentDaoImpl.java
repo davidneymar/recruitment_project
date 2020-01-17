@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mindgate.dao.AssessmentDao;
 import com.mindgate.dto.AssessmentDto;
+import com.mindgate.dto.CandidateListDto;
 
 @Repository
 public class AssessmentDaoImpl implements AssessmentDao {
@@ -26,7 +27,6 @@ public class AssessmentDaoImpl implements AssessmentDao {
 	private String sql;
 	private int count=0;
 	
-	
 	@Override
 	public List<AssessmentDto> getAllAssessment() {
 		sql = "select * from assessment_master";
@@ -36,19 +36,22 @@ public class AssessmentDaoImpl implements AssessmentDao {
 		List<AssessmentDto> listAssessment = new ArrayList<AssessmentDto>();
 		for(Map<String,Object> map : listMapAssessment){
 			AssessmentDto assessment = new AssessmentDto();
-			assessment.setAssessmentId((int)map.get("assessment_id"));
-			assessment.setAptitueScore((float)map.get("APTITUDE_SCORE"));
-			assessment.setStatus((String)map.get("status"));
-			assessment.setGroupDiscussionScore((float)map.get("GROUP_DISCUSSION_SCORE"));
-			assessment.setRating((float)map.get("rating"));
-			assessment.setProgramTestScore((float)map.get("program_test_Score"));
-			assessment.setSoftSkillsScore((float)map.get("SOFT_SKILL_ROUND_SCORE"));
+			assessment.setAssessmentId(Integer.valueOf(map.get("assessment_id").toString()));
+			assessment.setAptitueScore(Float.valueOf(map.get("APTITUDE_SCORE").toString()));
+			assessment.setStatus(map.get("status").toString());
+			assessment.setGroupDiscussionScore(Float.valueOf(map.get("GROUP_DISCUSSION_SCORE").toString()));
+			assessment.setRating(Float.valueOf(map.get("rating").toString()));
+			assessment.setProgramTestScore(Float.valueOf(map.get("program_test_Score").toString()));
+			assessment.setSoftSkillsScore(Float.valueOf(map.get("SOFT_SKILL_ROUND_SCORE").toString()));
 			
-			if((int)map.get("candidate_id") != 0){
-				int candidateId = (int)map.get("candidate_id");
+			if(Integer.parseInt(map.get("candidate_id").toString()) != 0){
+				int candidateId = Integer.valueOf(map.get("candidate_id").toString());
 				assessment.setCandidatedto(candidateDao.getCandidate(candidateId));
 			}
-			//else--> default value is null
+			else{
+				 //default value is null
+				assessment.setCandidatedto(new CandidateListDto());
+			}
 			
 			listAssessment.add(assessment);
 		}
@@ -65,10 +68,7 @@ public class AssessmentDaoImpl implements AssessmentDao {
 	@Override
 	public boolean postAssessment(AssessmentDto assessment) {
 		sql = "insert into assessment_master values(?,?,?,?,?,?,?,?)";
-		int fk=0;
-		if(assessment.getCandidatedto().getCandidateId() != 0){
-			fk = assessment.getCandidatedto().getCandidateId();
-		}
+
 		Object obj[] = new Object[]{
 			assessment.getAssessmentId(),
 			assessment.getRating(),
@@ -77,7 +77,7 @@ public class AssessmentDaoImpl implements AssessmentDao {
 			assessment.getGroupDiscussionScore(),
 			assessment.getSoftSkillsScore(),
 			assessment.getProgramTestScore(),
-			fk
+			assessment.getCandidatedto().getCandidateId()
 		};
 		count = jdbcTemplate.update(sql,obj);
 		if(count > 0)
@@ -86,7 +86,7 @@ public class AssessmentDaoImpl implements AssessmentDao {
 	}
 
 	@Override
-	public boolean deletePerAssessment(int assessmentId) {
+	public boolean deleteAssessment(int assessmentId) {
 		 sql = "delete from assessment_master where = "+assessmentId;
 		 count = jdbcTemplate.update(sql);
 		 if(count > 0)
@@ -119,8 +119,12 @@ public class AssessmentDaoImpl implements AssessmentDao {
 
 		@Override
 		public AssessmentDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-			
-			AssessmentDto dto = new AssessmentDto(
+			CandidateListDto candidate = candidateDao.getCandidate(rs.getInt("candidate_id"));
+				if(candidate == null)
+					candidate = new CandidateListDto();
+
+				candidate = candidateDao.getCandidate(rs.getInt("candidate_id"));
+			AssessmentDto assessment = new AssessmentDto(
 					rs.getInt("assessment_id"),
 					rs.getFloat("rating"),
 					rs.getFloat("APTITUDE_SCORE"),
@@ -128,10 +132,9 @@ public class AssessmentDaoImpl implements AssessmentDao {
 					rs.getFloat("GROUP_DISCUSSION_SCORE"),
 					rs.getFloat("SOFT_SKILL_ROUND_SCORE"),
 					rs.getFloat("program_test_Score"),
-					candidateDao.getCandidate(rs.getInt("candidate_id"))
+					candidate
 					);
-			return null;
+			return assessment;
 		}
-       		
 	}
 }

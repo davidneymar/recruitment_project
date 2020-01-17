@@ -14,6 +14,7 @@ public interface ProjectService {
 	
 	public boolean updateProject(ProjectDto Project);
 	
-	public boolean putProject(ProjectDto Project);
+	public boolean postProject(ProjectDto Project);
+	
 
 }

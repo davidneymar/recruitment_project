@@ -21,13 +21,13 @@ public class AssessmentServiceImpl implements AssessmentService {
 	}
 
 	@Override
-	public AssessmentDto getPerAssessment(int assessmentId) {
+	public AssessmentDto getAssessment(int assessmentId) {
 		return assessmentDao.getAssessment(assessmentId);
 	}
 
 	@Override
-	public boolean deletePerAssessment(int assessmentId) {
-		return assessmentDao.deletePerAssessment(assessmentId);
+	public boolean deleteAssessment(int assessmentId) {
+		return assessmentDao.deleteAssessment(assessmentId);
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class AssessmentServiceImpl implements AssessmentService {
 	}
 
 	@Override
-	public boolean putPerAssessment(AssessmentDto assessment) {
+	public boolean postAssessment(AssessmentDto assessment) {
 		return assessmentDao.postAssessment(assessment);
 	}
 

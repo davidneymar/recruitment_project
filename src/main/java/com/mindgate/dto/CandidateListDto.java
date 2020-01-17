@@ -1,8 +1,8 @@
 package com.mindgate.dto;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.Arrays;
-import java.util.Date;
+
 
 public class CandidateListDto {
 	
@@ -11,11 +11,11 @@ public class CandidateListDto {
 	private String qualification;
 	private float experience;
 	private String email;
-	private Long phoneNo;
-	private String primarySkills;
+	private String phoneNo;
+	private String primarySkill;
 	private String secondarySkills;
-	private byte[] resume;
-	private byte[] photograph;
+	private byte[] resume;   //  instead of Clob 
+	private byte[] photograph;// instead of Blob
 	private Timestamp  date;
 	private String status;
 	private JobDescriptionDto jobDesc; // forign key
@@ -25,7 +25,7 @@ public class CandidateListDto {
 	}
 
 	public CandidateListDto(int candidateId, String name, String qualification, float experience, String email,
-			Long phoneNo, String primarySkills, String secondarySkills, byte[] resume, byte[] photograph,
+			String phoneNo, String primarySkill, String secondarySkills, byte[] resume, byte[] photograph,
 			Timestamp date, String status, JobDescriptionDto jobDesc) {
 		super();
 		this.candidateId = candidateId;
@@ -34,7 +34,7 @@ public class CandidateListDto {
 		this.experience = experience;
 		this.email = email;
 		this.phoneNo = phoneNo;
-		this.primarySkills = primarySkills;
+		this.primarySkill = primarySkill;
 		this.secondarySkills = secondarySkills;
 		this.resume = resume;
 		this.photograph = photograph;
@@ -83,20 +83,20 @@ public class CandidateListDto {
 		this.email = email;
 	}
 
-	public Long getPhoneNo() {
+	public String getPhoneNo() {
 		return phoneNo;
 	}
 
-	public void setPhoneNo(Long phoneNo) {
+	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
 	}
 
-	public String getPrimarySkills() {
-		return primarySkills;
+	public String getPrimarySkill() {
+		return primarySkill;
 	}
 
-	public void setPrimarySkills(String primarySkills) {
-		this.primarySkills = primarySkills;
+	public void setPrimarySkill(String primarySkill) {
+		this.primarySkill = primarySkill;
 	}
 
 	public String getSecondarySkills() {
@@ -151,7 +151,7 @@ public class CandidateListDto {
 	public String toString() {
 		return "CandidateListDto [candidateId=" + candidateId + ", name=" + name + ", qualification=" + qualification
 				+ ", experience=" + experience + ", email=" + email + ", phoneNo=" + phoneNo + ", primarySkills="
-				+ primarySkills + ", secondarySkills=" + secondarySkills + ", resume=" + Arrays.toString(resume)
+				+ primarySkill + ", secondarySkills=" + secondarySkills + ", resume=" + Arrays.toString(resume)
 				+ ", photograph=" + Arrays.toString(photograph) + ", date=" + date + ", status=" + status + ", jobDesc="
 				+ jobDesc + "]";
 	}

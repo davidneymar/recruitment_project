@@ -12,7 +12,7 @@ public interface EmployeeService {
 	
 	public boolean deleteEmployee(int employeeId);
 	
-	public boolean getEmployee(int employeeId);
+	public EmployeeDto getEmployee(int employeeId);
 	
 	public List<EmployeeDto> getAllEmployees();
 }

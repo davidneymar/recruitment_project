@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.mindgate.dao.EmployeeDAO;
 import com.mindgate.dto.EmployeeDto;
+import com.mindgate.dto.ProjectDto;
 
 @Service
 public class EmployeeDAOImpl implements EmployeeDAO {
@@ -92,27 +93,31 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 		for (Map<String, Object> map : rows){
 			EmployeeDto employee = new EmployeeDto();
-			employee.setEmployeeId(Integer.parseInt(map.get("employee_Id").toString()));
+			employee.setEmployeeId(Integer.valueOf(map.get("employee_Id").toString()));
 			employee.setDesignation(map.get("designation").toString());
-			employee.setExperience(Float.parseFloat(map.get("experience").toString()));
+			employee.setExperience(Float.valueOf(map.get("experience").toString()));
 			employee.setPrimarySkill(map.get("primary_Skill").toString());
 			employee.setSecondarySkill(map.get("secondary_Skills").toString());
 			employee.setPassword(map.get("employee_password").toString());
 			employee.setStatus(map.get("status").toString());
 			
 			if((int)map.get("project_Id") != 0){
-				int projectId = (Integer)map.get("project_Id");
+				int projectId = Integer.valueOf(map.get("project_Id").toString());
 				employee.setProject(projectdao.getProject(projectId));
-			}
+			}else
+				employee.setProject(null);
 			employeeList.add(employee);
 		}
 		return employeeList;		
 	}
 
 	public class EmployeeRowMapper implements RowMapper<EmployeeDto>{
-		
 		@Override
 		public EmployeeDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+			ProjectDto project = null;
+			if(rs.getInt("project_id") != 0)
+				project = projectdao.getProject(rs.getInt("project_id"));
+			
 			EmployeeDto employee = new EmployeeDto(
 					rs.getInt("employee_id"),
 					rs.getString("designation"),
@@ -121,12 +126,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 					rs.getString("secondary_skills"),
 					rs.getString("status"),
 					rs.getString("password"),
-					projectdao.getProject(rs.getInt("project_id"))
-					//null
+					project
 					);
 			return employee;
 		}
-		
 	}
-	
 }

@@ -12,7 +12,7 @@ public interface CandidateListDAO {
 	
 	public boolean deleteCandidate(int candidateId);
 	
-	public boolean updateCandidate(int candidateId,CandidateListDto candidateListDto);
+	public boolean updateCandidate(CandidateListDto candidateListDto);
 	
 	public boolean addCandidate(CandidateListDto candidateListDto);
 }

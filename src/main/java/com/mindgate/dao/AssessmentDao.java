@@ -11,7 +11,7 @@ public interface AssessmentDao {
 	
 	public AssessmentDto getAssessment(int assessmentId);
 	
-	public boolean deletePerAssessment(int assessmentId);
+	public boolean deleteAssessment(int assessmentId);
 	
 	public boolean updateAssessment(AssessmentDto assessment);
 	
