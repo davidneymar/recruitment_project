@@ -31,8 +31,8 @@ public class JobDescriptionServiceImpl implements JobDescriptionService {
 	}
 
 	@Override
-	public boolean updateJobDescription(JobDescriptionDto jobDesc) {
-		return jobDescDao.updateJobDescription(jobDesc);
+	public boolean updateJobDescription(int id,JobDescriptionDto jobDesc) {
+		return jobDescDao.updateJobDescription(id,jobDesc);
 	}
 
 	@Override

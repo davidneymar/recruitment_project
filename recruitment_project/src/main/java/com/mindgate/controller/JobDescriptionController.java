@@ -37,9 +37,9 @@ public class JobDescriptionController {
 		return jobDescService.deleteJobDescription(jobDescId);
 	}
 	
-	@PutMapping("/")
-	public boolean updateJobDesc(@RequestBody JobDescriptionDto jobDesc) {
-		return jobDescService.updateJobDescription(jobDesc);
+	@PutMapping("/{id}")
+	public boolean updateJobDesc(@PathVariable("id") int id,@RequestBody JobDescriptionDto jobDesc) {
+		return jobDescService.updateJobDescription(id,jobDesc);
 	}
 	
 	@PostMapping("/")

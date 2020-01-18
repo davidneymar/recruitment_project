@@ -9,14 +9,23 @@ public class JobDescriptionDto {
 	private String secondarySkills;
 	private String designation;
 	private int noOfVacancies;
+	private String status;
 	private ProjectDto projectDetails;	//forign key
 	
 	public JobDescriptionDto() {
 		// TODO Auto-generated constructor stub
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public JobDescriptionDto(int jobDescId, float experience, String qualification, String primarySkill,
-			String secondarySkills, String designation, int noOfVacancies, ProjectDto projectDetails) {
+			String secondarySkills, String designation, int noOfVacancies, String status, ProjectDto projectDetails) {
 		super();
 		this.jobDescId = jobDescId;
 		this.experience = experience;
@@ -25,8 +34,11 @@ public class JobDescriptionDto {
 		this.secondarySkills = secondarySkills;
 		this.designation = designation;
 		this.noOfVacancies = noOfVacancies;
+		this.status = status;
 		this.projectDetails = projectDetails;
 	}
+
+
 
 	public int getJobDescId() {
 		return jobDescId;
@@ -95,9 +107,11 @@ public class JobDescriptionDto {
 	@Override
 	public String toString() {
 		return "JobDescriptionDto [jobDescId=" + jobDescId + ", experience=" + experience + ", qualification="
-				+ qualification + ", primarySkills=" + primarySkill + ", secondarySkills=" + secondarySkills
-				+ ", designation=" + designation + ", noOfVacancies=" + noOfVacancies + ", projectDetails="
-				+ projectDetails + "]";
+				+ qualification + ", primarySkill=" + primarySkill + ", secondarySkills=" + secondarySkills
+				+ ", designation=" + designation + ", noOfVacancies=" + noOfVacancies + ", status=" + status
+				+ ", projectDetails=" + projectDetails + "]";
 	}
+
+
 	
 }

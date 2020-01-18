@@ -40,7 +40,8 @@ public class JobDescriptionDAOImpl implements JobDescriptionDAO{
 					jobDesc.setPrimarySkill(data.get("primary_Skill").toString());
 					jobDesc.setSecondarySkills(data.get("secondary_Skills").toString());
 					jobDesc.setDesignation(data.get("designation").toString());
-					jobDesc.setNoOfVacancies(Integer.valueOf(data.get("no_of_resources_required").toString()));
+					jobDesc.setNoOfVacancies(Integer.valueOf(data.get("NO_OF_RESORCES_REQUIRED").toString()));
+					jobDesc.setStatus(data.get("status").toString());
 					
 					if(Integer.valueOf(data.get("project_id").toString()) != null) {
 						jobDesc.setProjectDetails(projectDao.getProject(Integer.valueOf(data.get("project_id").toString())));
@@ -53,6 +54,7 @@ public class JobDescriptionDAOImpl implements JobDescriptionDAO{
 
 	@Override
 	public JobDescriptionDto getJobDescription(int jobDescId) {
+		System.out.println("JOB DESCRIPTION");
 		sql="select * from job_description where JOB_DESCRIPTION_ID="+jobDescId;
 		return jdbcTemplate.queryForObject(sql, new JobDescriptionRowMapper());
 	}
@@ -67,14 +69,17 @@ public class JobDescriptionDAOImpl implements JobDescriptionDAO{
 	}
 
 	@Override
-	public boolean updateJobDescription(JobDescriptionDto jobDesc) {
-		sql = "update job_description set job_desc_id=?"
-				+ "experience=?"
-				+ "qualification=?"
-				+ "primary_Skill=?"
-				+ "secondary_Skills=?"
-				+ "designation=?"
-				+ "no_of_resources_required=?";
+	public boolean updateJobDescription(int id,JobDescriptionDto jobDesc) {
+		sql = "update job_description set "
+				+ "JOB_DESCRIPTION_ID=?,"
+				+ "experience=?,"
+				+ "qualification=?,"
+				+ "primary_Skill=?,"
+				+ "secondary_Skills=?,"
+				+ "designation=?,"
+				+ "NO_OF_RESORCES_REQUIRED=?,"   
+				+ "status=?"
+				+ "where JOB_DESCRIPTION_ID=?";
 		Object[] obj = new Object[] {
 				jobDesc.getJobDescId(),
 				jobDesc.getExperience(),
@@ -82,7 +87,9 @@ public class JobDescriptionDAOImpl implements JobDescriptionDAO{
 				jobDesc.getPrimarySkill(),
 				jobDesc.getSecondarySkills(),
 				jobDesc.getDesignation(),
-				jobDesc.getNoOfVacancies()
+				jobDesc.getNoOfVacancies(),
+				jobDesc.getStatus(),
+				id
 		};
 		count = jdbcTemplate.update(sql,obj);
 		if(count > 0)
@@ -92,7 +99,7 @@ public class JobDescriptionDAOImpl implements JobDescriptionDAO{
 	
 	@Override
 	public boolean postJobDescription(JobDescriptionDto jobDesc) {
-		sql = "insert into job_description values(?,?,?,?,?,?,?,?)";
+		sql = "insert into job_description values(?,?,?,?,?,?,?,?,?)";
 		Integer fk = null;
 		if(jobDesc.getProjectDetails().getProjecId() != 0)
 			fk = jobDesc.getProjectDetails().getProjecId();
@@ -104,6 +111,7 @@ public class JobDescriptionDAOImpl implements JobDescriptionDAO{
 				jobDesc.getSecondarySkills(),
 				jobDesc.getDesignation(),
 				jobDesc.getNoOfVacancies(),
+				jobDesc.getStatus(),
                 fk
 		};
 		count = jdbcTemplate.update(sql,obj);
@@ -117,17 +125,20 @@ public class JobDescriptionDAOImpl implements JobDescriptionDAO{
 		@Override
 		public JobDescriptionDto mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ProjectDto project = null;
-			if(rs.getObject("project_id") != null)
-				projectDao.getProject(rs.getInt("project_id"));
+			if(rs.getInt("project_id") != 0){
+				project = projectDao.getProject(rs.getInt("project_id"));
+			}
 			
 			JobDescriptionDto job = new JobDescriptionDto();
-			job.setJobDescId(rs.getInt("job_description_id"));
-			job.setExperience(rs.getFloat("experience"));
-			job.setQualification(rs.getString("qualification"));
-			job.setPrimarySkill(rs.getString("primary_Skill"));
-			job.setSecondarySkills(rs.getString("secondary_Skills"));
-			job.setDesignation(rs.getString("designation"));
-			job.setNoOfVacancies(rs.getInt("no_of_resources_required"));
+			job.setJobDescId(rs.getInt("JOB_DESCRIPTION_ID"));
+			System.out.println("ROWMAPPER = "+job.getJobDescId());
+			job.setExperience(rs.getFloat("EXPERIENCE"));
+			job.setQualification(rs.getString("QUALIFICATION"));
+			job.setPrimarySkill(rs.getString("PRIMARY_SKILL"));
+			job.setSecondarySkills(rs.getString("SECONDARY_SKILLS"));
+			job.setDesignation(rs.getString("DESIGNATION"));
+			job.setNoOfVacancies(rs.getInt("NO_OF_RESORCES_REQUIRED"));
+			job.setStatus(rs.getString("status"));
 			job.setProjectDetails(project);
 			return job;
 		}

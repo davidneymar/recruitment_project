@@ -37,13 +37,13 @@ public class ProjectController {
 		return projectService.deleteProject(projectId);
 	}
 	
-	@PutMapping("/")
-	public boolean updateproject(@RequestBody ProjectDto project) {
-		return projectService.updateProject(project);
+	@PutMapping("/{id}")
+	public boolean updateproject(@PathVariable("id") int id, @RequestBody ProjectDto project) {
+		return projectService.updateProject(id,project);
 	}
 	
 	@PostMapping("/")
 	public boolean addproject(@RequestBody ProjectDto project) {
-		return projectService.postProject(project);
+		return projectService.addProject(project);
 	}
 }

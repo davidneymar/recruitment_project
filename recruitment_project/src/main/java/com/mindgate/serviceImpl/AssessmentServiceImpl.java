@@ -31,13 +31,13 @@ public class AssessmentServiceImpl implements AssessmentService {
 	}
 
 	@Override
-	public boolean updateAssessment( AssessmentDto assessment) {
-		return assessmentDao.updateAssessment(assessment);
+	public boolean updateAssessment(int id, AssessmentDto assessment) {
+		return assessmentDao.updateAssessment(id,assessment);
 	}
 
 	@Override
-	public boolean postAssessment(AssessmentDto assessment) {
-		return assessmentDao.postAssessment(assessment);
+	public boolean addAssessment(AssessmentDto assessment) {
+		return assessmentDao.addAssessment(assessment);
 	}
 
 }

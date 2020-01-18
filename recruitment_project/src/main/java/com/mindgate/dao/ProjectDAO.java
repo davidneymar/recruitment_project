@@ -13,7 +13,7 @@ public interface ProjectDAO {
 	
 	public boolean deleteProject(int ProjectId);
 	
-	public boolean updateProject(ProjectDto Project);
+	public boolean updateProject(int id,ProjectDto Project);
 	
-	public boolean postJobProject(ProjectDto Project);
+	public boolean addJobProject(ProjectDto Project);
 }

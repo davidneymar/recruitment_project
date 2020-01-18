@@ -12,9 +12,8 @@ public interface ProjectService {
 	
 	public boolean deleteProject(int ProjectId);
 	
-	public boolean updateProject(ProjectDto Project);
+	public boolean updateProject(int id,ProjectDto Project);
 	
-	public boolean postProject(ProjectDto Project);
+	public boolean addProject(ProjectDto Project);
 	
-
 }

@@ -16,7 +16,7 @@ public class CandidateListDto {
 	private String secondarySkills;
 	private byte[] resume;   //  instead of Clob 
 	private byte[] photograph;// instead of Blob
-	private Timestamp  date;
+	private Timestamp date;
 	private String status;
 	private JobDescriptionDto jobDesc; // forign key
 	

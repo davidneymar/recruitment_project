@@ -45,13 +45,13 @@ public class AssessmentDaoImpl implements AssessmentDao {
 			assessment.setProgramTestScore(Float.valueOf(map.get("PROGRAM_TEST_SCORE").toString()));
 			assessment.setSoftSkillsScore(Float.valueOf(map.get("SOFT_SKILL_SCORE").toString()));
 			
-			if(Integer.valueOf(map.get("CANDIDATE_ID").toString()) != null){
+			if(map.get("CANDIDATE_ID") != null){
 				int candidateId = Integer.valueOf(map.get("CANDIDATE_ID").toString());
 				assessment.setCandidatedto(candidateDao.getCandidate(candidateId));
 			}
 			else{
 				 //default value is null
-				assessment.setCandidatedto(new CandidateListDto());
+				assessment.setCandidatedto(null);
 			}
 			
 			listAssessment.add(assessment);
@@ -67,14 +67,14 @@ public class AssessmentDaoImpl implements AssessmentDao {
 	}
 
 	@Override
-	public boolean postAssessment(AssessmentDto assessment) {
-		sql = "insert into assessment_master values(?,?,?,?,?,?,?,?)";
+	public boolean addAssessment(AssessmentDto assessment) {
+		sql = "insert into assessment_master values(?,?,?,?,?,?,?)";
 		Integer fk= null;
 		if(assessment.getCandidatedto().getCandidateId() != 0){
 			fk = assessment.getCandidatedto().getCandidateId();
 		}
 		Object obj[] = new Object[]{
-			assessment.getAssessmentId(),
+				
 			assessment.getRating(),
 			assessment.getAptitudeScore(),
 			assessment.getStatus(),
@@ -91,7 +91,7 @@ public class AssessmentDaoImpl implements AssessmentDao {
 
 	@Override
 	public boolean deleteAssessment(int assessmentId) {
-		 sql = "delete from assessment_master where = "+assessmentId;
+		 sql = "delete from assessment_master where assessment_id= "+assessmentId;
 		 count = jdbcTemplate.update(sql);
 		 if(count > 0)
 			 return true;
@@ -99,12 +99,16 @@ public class AssessmentDaoImpl implements AssessmentDao {
 	}
 
 	@Override
-	public boolean updateAssessment(AssessmentDto assessment) {
-		sql = "update assessment_master set rating = ?,"
-				+ "aptitude_Score=?,status = ?,"
+	public boolean updateAssessment(int id,AssessmentDto assessment) {
+		sql = "update assessment_master set "
+				+ "rating = ?,"
+				+ "aptitude_Score=?,"
+				+ "status = ?,"
 				+ "group_Discussion_Score = ?,"
 				+ "soft_Skill_Score = ?,"
-				+ "programTestScore = ? where assessment_Id = "+assessment.getAssessmentId();
+				+ "PROGRAM_TEST_SCORE = ? "
+				+ "where assessment_Id = ?";
+		
 		Object[] obj = new Object[]{
 				assessment.getRating(),
 				assessment.getAptitudeScore(),
@@ -112,6 +116,7 @@ public class AssessmentDaoImpl implements AssessmentDao {
 				assessment.getGroupDiscussionScore(),
 				assessment.getSoftSkillsScore(),
 				assessment.getProgramTestScore(),
+				id
 		};
 		count = jdbcTemplate.update(sql,obj);
 		if(count > 0)

@@ -6,6 +6,7 @@ import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,38 +44,40 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 			candidate.setName(map.get("name").toString());
 			candidate.setQualification(map.get("QUALIFICATION").toString());
 			candidate.setExperience(Float.valueOf(map.get("EXPERIENCE").toString()));   
-			candidate.setEmail(map.get("ejob_desc_idmail").toString());
+			candidate.setEmail(map.get("email").toString());
 			candidate.setPhoneNo(map.get("PHONE_NUMBER").toString());
 			candidate.setPrimarySkill(map.get("PRIMARY_SKILL").toString());
 			candidate.setSecondarySkills(map.get("SECONDARY_SKILLS").toString());
-			try {
-				Clob candResume = (Clob)map.get("RESUME");
-				Reader r = candResume.getCharacterStream();
-				int c=0,i=0;
-				byte[] byteArr = null;
-
-				while((i=r.read()) != -1) {
-					byteArr[c] = (byte)i;
-					c++;
-				}
-				candidate.setResume(byteArr);   // resume for Clob --> character large object
-				Blob candImage = (Blob)map.get("PHOTOGRAPH");
-				candidate.setPhotograph(candImage.getBytes(
-						           1,(int)candImage.length()));// image for Blob --> binary large Object
-				
-			}catch(IOException io) {
-				System.out.println("exception occur from Reader "+io);
-			}catch(SQLException sql) {
-				System.out.println("exception occur from candImage.length() "+sql);
-			}
-			
-			candidate.setDate((java.sql.Timestamp)map.get("APPLIED_DATE"));
+//			try {
+//				Clob candResume = (Clob)map.get("RESUME");
+//				Reader r = candResume.getCharacterStream();
+//				int c=0,i=0;
+//				byte[] byteArr = null;
+//
+//				while((i=r.read()) != -1) {
+//					byteArr[c] = (byte)i;
+//					c++;
+//				}
+//				candidate.setResume(byteArr);   // resume for Clob --> character large object
+//				Blob candImage = (Blob)map.get("PHOTOGRAPH");
+//				candidate.setPhotograph(candImage.getBytes(
+//						           1,(int)candImage.length()));// image for Blob --> binary large Object
+//				
+//			}catch(IOException io) {
+//				System.out.println("exception occur from Reader "+io);
+//			}catch(SQLException sql) {
+//				System.out.println("exception occur from candImage.length() "+sql);
+//			}
+			candidate.setResume(new byte[10]);
+			candidate.setPhotograph(new byte[20]);
+			candidate.setDate(Timestamp.valueOf(map.get("APPLIED_DATE").toString()));
+		    System.out.println("TIME = "+candidate.getDate());
 			candidate.setStatus(map.get("status").toString());
 
-			if(Integer.parseInt(map.get("JOB_DESCRIPTION_ID").toString()) != 0)
+			if(Integer.valueOf(map.get("JOB_DESCRIPTION_ID").toString()) != null)
 				candidate.setJobDesc(jobDescDao.getJobDescription(Integer.valueOf(map.get("JOB_DESCRIPTION_ID").toString())));
 			else
-				candidate.setJobDesc(new JobDescriptionDto());
+				candidate.setJobDesc(null);
 			listcandidate.add(candidate);	
 		}
 
@@ -84,6 +87,7 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 	@Override
 	public CandidateListDto getCandidate(int candidateId) {
 		sql = "select * from candidate_list where candidate_id ="+candidateId;
+		System.out.println("CANDIDATE");
 		return jdbcTemplate.queryForObject(sql, new CandidateRowMapper());
 	}
 
@@ -97,19 +101,21 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 	}
 
 	@Override
-	public boolean updateCandidate(CandidateListDto candidateDto) {
-		sql = "update job_description set candidate_id=?"
-				+ "name=?"
-				+ "qualification=?"
-				+ "experience=?"
-				+ "email=?"
-				+ "phone_Number=?"
-				+ "primary_Skill=?"
-				+ "secondary_Skills=?"
-				+ "resume=?"
-				+ "photograph=?"
-				+ "date=?"
-				+ "status=?";
+	public boolean updateCandidate(int id,CandidateListDto candidateDto) {
+		sql = "update candidate_list set "
+				+ "CANDIDATE_ID=?,"
+				+ "name=?,"
+				+ "QUALIFICATION=?,"
+				+ "EXPERIENCE=?,"
+				+ "email=?,"
+				+ "phone_Number=?,"
+				+ "primary_Skill=?,"
+				+ "SECONDARY_SKILLS=?,"
+				+ "resume=?,"
+				+ "PHOTOGRAPH=?,"
+				+ "APPLIED_DATE=?,"
+				+ "status=?"
+				+ "where CANDIDATE_ID =?";
 		Object[] obj = new Object[] {
 				candidateDto.getCandidateId(),
 				candidateDto.getName(),
@@ -122,7 +128,8 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 				candidateDto.getResume(),
 				candidateDto.getPhotograph(),
 				candidateDto.getDate(),
-				candidateDto.getStatus()
+				candidateDto.getStatus(),
+				id
 		};
 		count = jdbcTemplate.update(sql,obj);
 		if(count > 0)
@@ -132,14 +139,13 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 
 	@Override
 	public boolean addCandidate(CandidateListDto candidateDto) {
-		sql = "insert into candidate_list values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		sql = "insert into candidate_list values(?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		Integer fk= null;
 		if(candidateDto.getJobDesc().getJobDescId() != 0){
 			fk = candidateDto.getJobDesc().getJobDescId();
 		}
 		Object[] obj = new Object[] {
-				candidateDto.getCandidateId(),
 				candidateDto.getName(),
 				candidateDto.getQualification(),
 				candidateDto.getExperience(),
@@ -164,7 +170,7 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 		@Override
 		public CandidateListDto mapRow(ResultSet rs, int rowNum) throws SQLException {
 			JobDescriptionDto jobDescription = null;
-			if(rs.getObject("JOB_DESCRIPTION_ID") != null)
+			if(rs.getInt("JOB_DESCRIPTION_ID") != 0)
 				jobDescription = jobDescDao.getJobDescription(rs.getInt("JOB_DESCRIPTION_ID"));
 			
 			CandidateListDto candidate = new CandidateListDto();
@@ -176,26 +182,27 @@ public class CandidateListDAOImpl implements CandidateListDAO {
 			candidate.setPhoneNo(rs.getString("phone_number"));
 			candidate.setPrimarySkill(rs.getString("primary_Skill"));
 			candidate.setSecondarySkills(rs.getString("secondary_Skills"));
-			try {
-
-				Clob clobResume = rs.getClob("resume");
-				Reader r = clobResume.getCharacterStream();
-				int i=0,c=0;
-				byte[] byteArr = null;
-			    while((i=r.read())!=-1) {
-			    	byteArr[c] = (byte)i;
-			    }
-			    candidate.setResume(byteArr);
-			    Blob blobImage = rs.getBlob("photograph");
-			    candidate.setPhotograph(blobImage.getBytes(1, (int)blobImage.length()));
-			    
-			}catch(SQLException sql){
-				System.out.println("exception occur blob.length()  "+sql);
-			}catch(IOException io) {
-				System.out.println("exception occur from Reader "+io);
-			}
-			
-			candidate.setDate(rs.getTimestamp("date"));
+//			try {
+//
+//				Clob clobResume = rs.getClob("resume");
+//				Reader r = clobResume.getCharacterStream();
+//				int i=0,c=0;
+//				byte[] byteArr = null;
+//			    while((i=r.read())!=-1) {
+//			    	byteArr[c] = (byte)i;
+//			    }
+//			    candidate.setResume(byteArr);
+//			    Blob blobImage = rs.getBlob("photograph");
+//			    candidate.setPhotograph(blobImage.getBytes(1, (int)blobImage.length()));
+//			    
+//			}catch(SQLException sql){
+//				System.out.println("exception occur blob.length()  "+sql);
+//			}catch(IOException io) {
+//				System.out.println("exception occur from Reader "+io);
+//			}
+			 candidate.setResume(new byte[10]);
+			 candidate.setPhotograph(new byte[10]);
+			candidate.setDate(rs.getTimestamp("APPLIED_DATE"));
 			candidate.setStatus(rs.getString("status"));
 			candidate.setJobDesc(jobDescription);
 			

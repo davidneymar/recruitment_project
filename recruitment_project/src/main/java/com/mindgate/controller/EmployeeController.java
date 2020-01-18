@@ -40,9 +40,9 @@ public class EmployeeController {
 		return employeeService.deleteEmployee(employeeId);
 	}
 	
-	@PutMapping("/")
-	public boolean updateEmployee(@RequestBody EmployeeDto employee) {
-		return employeeService.updateEmployee(employee);
+	@PutMapping("/{id}")
+	public boolean updateEmployee(@PathVariable("id") int id,@RequestBody EmployeeDto employee) {
+		return employeeService.updateEmployee(id,employee);
 	}
 	
 	@PostMapping("/")

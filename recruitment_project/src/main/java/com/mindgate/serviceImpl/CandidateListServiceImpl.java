@@ -3,11 +3,13 @@ package com.mindgate.serviceImpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.mindgate.daoImpl.CandidateListDAOImpl;
 import com.mindgate.dto.CandidateListDto;
 import com.mindgate.service.CandidateListService;
 
+@Service
 public class CandidateListServiceImpl implements CandidateListService {
 
 	@Autowired
@@ -29,8 +31,8 @@ public class CandidateListServiceImpl implements CandidateListService {
 	}
 
 	@Override
-	public boolean updateCandidate(CandidateListDto candidateListDto) {
-		return candidateDao.updateCandidate(candidateListDto);
+	public boolean updateCandidate(int id,CandidateListDto candidateListDto) {
+		return candidateDao.updateCandidate(id,candidateListDto);
 	}
 
 	@Override

@@ -36,8 +36,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public boolean updateEmployee(EmployeeDto employee) {
-		return employeeDao.updateEmployee(employee);
+	public boolean updateEmployee(int id,EmployeeDto employee) {
+		return employeeDao.updateEmployee(id,employee);
 	}
 
 	

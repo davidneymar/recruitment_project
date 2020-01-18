@@ -31,13 +31,13 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public boolean updateProject(ProjectDto project) {
-		return projectDao.updateProject(project);
+	public boolean updateProject(int id, ProjectDto project) {
+		return projectDao.updateProject(id,project);
 	}
 
 	@Override
-	public boolean postProject(ProjectDto project) {
-		return projectDao.postJobProject(project);
+	public boolean addProject(ProjectDto project) {
+		return projectDao.addJobProject(project);
 	}
 
 }

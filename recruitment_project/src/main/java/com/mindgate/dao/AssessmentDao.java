@@ -13,8 +13,8 @@ public interface AssessmentDao {
 	
 	public boolean deleteAssessment(int assessmentId);
 	
-	public boolean updateAssessment(AssessmentDto assessment);
+	public boolean updateAssessment(int id,AssessmentDto assessment);
 	
-	public boolean postAssessment(AssessmentDto assessment);
+	public boolean addAssessment(AssessmentDto assessment);
 
 }

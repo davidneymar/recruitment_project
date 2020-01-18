@@ -37,13 +37,13 @@ public class AssessmentController {
 		return assessmentService.deleteAssessment(assessmentId);
 	}
 	
-	@PutMapping("/")
-	public boolean updateAssessment(@RequestBody AssessmentDto assessment) {
-		return assessmentService.updateAssessment(assessment);
+	@PutMapping("/{id}")
+	public boolean updateAssessment(@PathVariable("id") int id,@RequestBody AssessmentDto assessment) {
+		return assessmentService.updateAssessment(id,assessment);
 	}
 	
 	@PostMapping("/")
 	public boolean addAssessment(@RequestBody AssessmentDto assessment) {
-		return assessmentService.postAssessment(assessment);
+		return assessmentService.addAssessment(assessment);
 	}
 }

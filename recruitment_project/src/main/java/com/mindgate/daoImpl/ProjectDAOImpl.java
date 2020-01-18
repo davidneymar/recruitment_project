@@ -25,7 +25,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 	
 	@Override
 	public List<ProjectDto> getAllProject() {
-	    sql = "select * from project_details"; // project_details or project_master
+	    sql = "select * from project_master"; // project_details or project_master
 	    List<Map<String,Object>> data = jdbcTemplate.queryForList(sql);
 	    List<ProjectDto> projectList = new ArrayList<ProjectDto>();
 	    for(Map<String,Object> map : data) {
@@ -41,13 +41,14 @@ public class ProjectDAOImpl implements ProjectDAO {
 
 	@Override
 	public ProjectDto getProject(int projectId) {
-		sql = "select * from project_details where project_id="+projectId;
+		System.out.println("PROJECT " + projectId);
+		sql = "select * from project_master where project_id="+projectId;
 		return jdbcTemplate.queryForObject(sql, new ProjectRowMapper());
 	}
 
 	@Override
 	public boolean deleteProject(int projectId) {
-		sql = "delete from project_details where project_id="+projectId;
+		sql = "delete from project_master where project_id="+projectId;
 		count = jdbcTemplate.update(sql);
 		if(count > 0)
 			return true;
@@ -55,16 +56,17 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 
 	@Override
-	public boolean updateProject(ProjectDto project) {
-		sql = "update project_details set name=?"
-				+ "budget=?"
-				+ "no_of_resources_deployed=?"
-				+ "where project_id=?";
+	public boolean updateProject(int id,ProjectDto project) {
+		System.out.println("PROJECT" +project.toString() );
+		sql = "update project_master set NAME=?,"
+				+ "BUDGET=?,"
+				+ "NO_OF_RESOURCES_DEPLOYED=?"
+				+ "where PROJECT_ID=?";
 		Object obj[] = new Object[] {
 				project.getName(),
 			    project.getBudget(),
 			    project.getNoOfResourceDeployed(),
-			    project.getProjecId()
+			    id
 		};
 		count = jdbcTemplate.update(sql,obj);
 		if(count > 0)
@@ -73,10 +75,9 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 
 	@Override
-	public boolean postJobProject(ProjectDto project) {
-		sql = "insert into project_details values(?,?,?,?)";
+	public boolean addJobProject(ProjectDto project) {
+		sql = "insert into project_master values(?,?,?)";
 		Object[] obj = new Object[] {
-				project.getProjecId(),
 				project.getName(),
 				project.getBudget(),
 				project.getNoOfResourceDeployed()
@@ -94,6 +95,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 			ProjectDto project = new ProjectDto();
 			project.setProjecId(rs.getInt("project_id"));
 			project.setName(rs.getString("name"));
+			System.out.println("projectName= "+project.getName());
 			project.setBudget(rs.getDouble("budget"));
 			project.setNoOfResourceDeployed(rs.getInt("no_of_resources_deployed"));
 			return project;

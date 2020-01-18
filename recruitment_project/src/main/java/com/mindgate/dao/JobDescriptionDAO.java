@@ -13,7 +13,7 @@ public List<JobDescriptionDto> getAllJobDescription();
 	
 	public boolean deleteJobDescription(int assessmentId);
 	
-	public boolean updateJobDescription(JobDescriptionDto assessment);
+	public boolean updateJobDescription(int id,JobDescriptionDto assessment);
 	
 	public boolean postJobDescription(JobDescriptionDto assessment);
 }

@@ -12,7 +12,7 @@ public interface JobDescriptionService {
 	
 	public boolean deleteJobDescription(int JobDescriptionId);
 	
-	public boolean updateJobDescription(JobDescriptionDto JobDescription);
+	public boolean updateJobDescription(int id,JobDescriptionDto JobDescription);
 	
 	public boolean postJobDescription(JobDescriptionDto JobDescription);
 }

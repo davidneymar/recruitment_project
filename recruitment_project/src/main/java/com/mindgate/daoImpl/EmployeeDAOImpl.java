@@ -9,13 +9,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.mindgate.dao.EmployeeDAO;
 import com.mindgate.dto.EmployeeDto;
 import com.mindgate.dto.ProjectDto;
 
-@Service
+@Repository
 public class EmployeeDAOImpl implements EmployeeDAO {
 
 	@Autowired
@@ -34,7 +35,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			fk = employee.getProject().getProjecId();
 		}
 		Object[] args = new Object[] { 
-				employee.getEmployeeId(), 
 				employee.getDesignation(), 
 				employee.getExperience(),
 				employee.getPrimarySkill(),
@@ -50,20 +50,22 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	@Override
-	public boolean updateEmployee(EmployeeDto employee) {
+	public boolean updateEmployee(int id,EmployeeDto employee) {
 		sql = "update employee_master set DESIGNATION=?,"
 				+ "EXPERIENCE=?,"
 				+ "PRIMARY_SKILL=?,"
 				+ "SECONDARY_SKILLS=?,"
 				+ "STATUS=?,"
-				+ "EMPLOYEE_PASSWORD=?";
+				+ "EMPLOYEE_PASSWORD=?"
+				+ "where EMPLOYEE_ID=?";
 		Object[] obj = new Object[]{
 				employee.getDesignation(),
 				employee.getExperience(),
 				employee.getPrimarySkill(),
 				employee.getSecondarySkill(),
 				employee.getStatus(),
-				employee.getPassword()
+				employee.getPassword(),
+				id
 		};
 		count = jdbcTemplate.update(sql,obj);
 		if(count > 0)
@@ -105,7 +107,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 				int projectId = Integer.valueOf(map.get("project_Id").toString());
 				employee.setProject(projectdao.getProject(projectId));
 			}else
-				employee.setProject(new ProjectDto());
+				employee.setProject(null);
 			employeeList.add(employee);
 		}
 		return employeeList;		
@@ -115,7 +117,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		@Override
 		public EmployeeDto mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ProjectDto project = null;
-			if(rs.getObject("project_id") != null)
+			if(rs.getInt("project_id") != 0)
 				project = projectdao.getProject(rs.getInt("project_id"));
 			
 			EmployeeDto employee = new EmployeeDto(
@@ -125,7 +127,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 					rs.getString("primary_skill"),
 					rs.getString("secondary_skills"),
 					rs.getString("status"),
-					rs.getString("password"),
+					rs.getString("EMPLOYEE_PASSWORD"),
 					project
 					);
 			return employee;

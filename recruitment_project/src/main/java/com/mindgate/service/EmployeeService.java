@@ -8,7 +8,7 @@ public interface EmployeeService {
 
     public boolean addEmployee(EmployeeDto employee);
 	
-	public boolean updateEmployee(EmployeeDto employee);
+	public boolean updateEmployee(int id,EmployeeDto employee);
 	
 	public boolean deleteEmployee(int employeeId);
 	
